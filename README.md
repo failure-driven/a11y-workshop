@@ -6,8 +6,8 @@ a workshop around A11y (accessibility) best practices in web apps.
 
 ```
 cd spikes/inline-diff-editor
-npm install
-npm run dev
+just
+just run
 open http://localhost:5173/
 ```
 
