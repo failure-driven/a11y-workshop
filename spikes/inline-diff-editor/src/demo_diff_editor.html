@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo diff editor</title>
+  </head>
+  <body>
+    <header>
+      <h1>Demo diff editor</h1>
+    </header>
+    <main style="height: 200px"></main>
+    <footer>
+      <h2>More info</h2>
+      <details>
+        <summary>hint</summary>
+        <p>Info and links as a hint</p>
+        <ul>
+          <li>
+            <p>the autocomplete attribute is incorrectly formatted</p>
+          </li>
+          <li>
+            <a
+              href="https://dequeuniversity.com/rules/axe/4.10/autocomplete-valid"
+              >https://dequeuniversity.com/rules/axe/4.10/autocomplete-valid</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/WCAG21/Understanding/identify-input-purpose.html"
+              >https://www.w3.org/WAI/WCAG21/Understanding/identify-input-purpose.html</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://html.spec.whatwg.org/multipage/forms.html#autofilling-form-controls-the-autocomplete-attribute"
+              >https://html.spec.whatwg.org/multipage/forms.html#autofilling-form-controls-the-autocomplete-attribute</a
+            >
+          </li>
+        </ul>
+      </details>
+      <div style="height: 480px">
+        <label
+          >Solution editor
+          <section
+            id="container"
+            style="height: calc(100% - 2em); width: 100%"
+          ></section>
+        </label>
+      </div>
+      <section class="actions">
+        <label id="inline-label" for="inline">Inline</label>
+        <input
+          id="inline"
+          aria-labelledby="inline-label"
+          type="checkbox"
+          class="inline-it"
+        />
+        <label id="update-label">Update</label>
+        <button aria-labelledby="update-label" id="update">Update</button>
+      </section>
+      <script type="module">
+        const text1 = `<section>
+          <label for="autocomplete-demo">Favourite fruit 🍐🍎🍇🥑🍅🍏</label>
+          <div>
+            <input
+              autocomplete="names"
+              data-values="['pear','apple','avocado','tomatoe','grape']"
+              id="autocomplete-demo"
+            />
+          </div>
+        </section>`;
+        const text2 = text1;
+        var monaco = import("monaco-editor");
+        monaco.then((monaco) => {
+          const containerElement = document.getElementById("container");
+          const editor = monaco.editor.createDiffEditor(containerElement, {
+            renderSideBySide: true,
+            ariaLabel: "Inline Diff Editor",
+            theme: "hc-black",
+            automaticLayout: true,
+            minimap: { enabled: false },
+          });
+          editor.setModel({
+            original: monaco.editor.createModel(text1, "html"),
+            modified: monaco.editor.createModel(text2, "html"),
+          });
+
+          document
+            .querySelector(".inline-it")
+            .addEventListener("change", (e) => {
+              editor.updateOptions({ renderSideBySide: !e.target.checked });
+            });
+
+          document.querySelector("#update").addEventListener("click", () => {
+            document.querySelector("main").innerHTML = editor
+              .getModel()
+              ["modified"].getValue();
+          });
+          document.querySelector("main").innerHTML = editor
+            .getModel()
+            ["modified"].getValue();
+        });
+      </script>
+    </footer>
+  </body>
+</html>

@@ -55,3 +55,9 @@ open http://localhost:5173/
 
 - [ ] inline diff editor to fix and submit A11y fixes found using Axe DevTools
   chrome plugin
+  - fix error
+    ```
+    Uncaught Error: Cannot read properties of undefined (reading 'toUrl')
+
+    TypeError: Cannot read properties of undefined (reading 'toUrl')
+    ```
